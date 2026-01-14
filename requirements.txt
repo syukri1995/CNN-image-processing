@@ -1,0 +1,10 @@
+python 3.13
+fiftyone
+numpy
+tensorflow
+keras
+scikit-learn
+matplotlib
+seaborn
+streamlit
+pillow
