@@ -58,7 +58,10 @@ st.sidebar.markdown("---")
 # MAIN UI
 # -----------------------------
 st.title("🍽️ Food Image Classification")
-st.markdown("Upload a food image and let the CNN model classify it.")
+st.info("""
+**Supported Foods:** Burger 🍔, Cake 🍰, Fried Rice 🍚, Pizza 🍕, Sushi 🍣
+Upload an image of one of these foods for the best results.
+""")
 
 uploaded_file = st.file_uploader(
     "📤 Upload Image",
@@ -74,7 +77,9 @@ if uploaded_file:
         img_array = np.expand_dims(img_array, axis=0)
         img_array = img_array / 255.0
 
-        prediction = model.predict(img_array)
+        with st.spinner("Analyzing image..."):
+            prediction = model.predict(img_array)
+
         predicted_class = class_names[np.argmax(prediction)]
         confidence = float(np.max(prediction))
 
