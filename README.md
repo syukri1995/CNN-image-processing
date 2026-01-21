@@ -66,17 +66,11 @@ Food_cnn_project/
 │   └── cnn.ipynb              # Model training notebook
 ├── dataset/
 │   ├── train/                 # Training images
-│   │   ├── burger/
-│   │   ├── cake/
-│   │   ├── fried_rice/
-│   │   ├── pizza/
-│   │   └── sushi/
-│   └── test/                  # Test images
-│       ├── burger/
-│       ├── cake/
-│       ├── fried_rice/
-│       ├── pizza/
-│       └── sushi/
+│   ├── burger/
+│   ├── cake/
+│   ├── fried_rice/
+│   ├── pizza/
+│   └── sushi/    
 └── report/                     # Project reports
 ```
 
