@@ -158,7 +158,7 @@ with col2:
 
             # Display Top Prediction
             st.markdown(f"""
-            <div class="prediction-box">
+            <div class="prediction-box" role="alert" aria-live="polite">
                 <div class="prediction-title">Top Prediction</div>
                 <div class="confidence-score">{predicted_class}</div>
                 <p>Confidence: {confidence*100:.1f}%</p>
@@ -192,4 +192,15 @@ with col2:
             )
 
     else:
-        st.info("👈 Upload an image in the left panel to see predictions here.")
+        st.info("👈 Waiting for you to upload an image!")
+        st.markdown("""
+        ### I can recognize:
+
+        *   🍔 **Burger**
+        *   🍰 **Cake**
+        *   🍚 **Fried Rice**
+        *   🍕 **Pizza**
+        *   🍣 **Sushi**
+
+        *Upload an image from your device to see the magic happen!*
+        """)
