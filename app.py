@@ -92,6 +92,14 @@ except Exception as e:
 
 class_names = ['Burger', 'Cake', 'Fried Rice', 'Pizza', 'Sushi']
 
+EMOJI_MAP = {
+    'Burger': '🍔',
+    'Cake': '🍰',
+    'Fried Rice': '🍚',
+    'Pizza': '🍕',
+    'Sushi': '🍣'
+}
+
 # -----------------------------
 # SIDEBAR
 # -----------------------------
@@ -155,12 +163,15 @@ with col2:
                 predicted_class_idx = np.argmax(prediction)
                 predicted_class = class_names[predicted_class_idx]
                 confidence = float(np.max(prediction))
+                predicted_emoji = EMOJI_MAP.get(predicted_class, '🍽️')
 
             # Display Top Prediction
             st.markdown(f"""
-            <div class="prediction-box">
+            <div class="prediction-box" role="status" aria-live="polite">
                 <div class="prediction-title">Top Prediction</div>
-                <div class="confidence-score">{predicted_class}</div>
+                <div class="confidence-score">
+                    <span aria-hidden="true">{predicted_emoji}</span> {predicted_class}
+                </div>
                 <p>Confidence: {confidence*100:.1f}%</p>
             </div>
             """, unsafe_allow_html=True)
