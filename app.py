@@ -128,8 +128,9 @@ col1, col2 = st.columns([1, 1])
 with col1:
     st.markdown("#### 1. Upload Image")
     uploaded_file = st.file_uploader(
-        "Choose a food image...",
-        type=["jpg", "jpeg", "png"]
+        "Choose a food image to classify",
+        type=["jpg", "jpeg", "png"],
+        help="Supported formats: JPG, PNG. The model performs best with clear, centered food images."
     )
 
     if uploaded_file:
@@ -192,4 +193,4 @@ with col2:
             )
 
     else:
-        st.info("👈 Upload an image in the left panel to see predictions here.")
+        st.info("👋 Welcome! Upload a food image on the left to get started.")
