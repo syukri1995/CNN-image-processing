@@ -31,14 +31,14 @@ def local_css():
         width: 100%;
         border-radius: 5px;
         height: 3em;
-        background-color: #ff4b4b;
+        background-color: #D32F2F;
         color: white;
     }
     .reportview-container .main .block-container {
         padding-top: 2rem;
     }
     h1 {
-        color: #ff4b4b;
+        color: #D32F2F;
         text-align: center;
     }
     .prediction-box {
@@ -57,7 +57,7 @@ def local_css():
     .confidence-score {
         font-size: 48px;
         font-weight: bold;
-        color: #ff4b4b;
+        color: #D32F2F;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -188,8 +188,8 @@ with col2:
                 prob_df,
                 x='Category',
                 y='Probability',
-                color="#ff4b4b"
+                color="#D32F2F"
             )
 
     else:
-        st.info("👈 Upload an image in the left panel to see predictions here.")
+        st.info("👋 Upload an image to start the classification.")
