@@ -129,7 +129,8 @@ with col1:
     st.markdown("#### 1. Upload Image")
     uploaded_file = st.file_uploader(
         "Choose a food image...",
-        type=["jpg", "jpeg", "png"]
+        type=["jpg", "jpeg", "png"],
+        help="Upload a food image (Burger, Cake, Fried Rice, Pizza, or Sushi) to classify it."
     )
 
     if uploaded_file:
@@ -158,10 +159,19 @@ with col2:
 
             # Display Top Prediction
             st.markdown(f"""
-            <div class="prediction-box">
+            <div class="prediction-box" role="status" aria-live="polite">
                 <div class="prediction-title">Top Prediction</div>
                 <div class="confidence-score">{predicted_class}</div>
-                <p>Confidence: {confidence*100:.1f}%</p>
+                <div style="background-color: #e0e0e0; border-radius: 10px; height: 10px; width: 100%; margin-top: 10px;">
+                    <div role="progressbar"
+                         aria-valuenow="{confidence*100:.0f}"
+                         aria-valuemin="0"
+                         aria-valuemax="100"
+                         aria-label="Confidence score"
+                         style="background-color: #D32F2F; height: 10px; border-radius: 10px; width: {confidence*100:.0f}%">
+                    </div>
+                </div>
+                <p style="margin-top: 5px;">Confidence: {confidence*100:.1f}%</p>
             </div>
             """, unsafe_allow_html=True)
 

@@ -5,3 +5,7 @@
 ## 2024-05-23 - Directional Language
 **Learning:** "Left panel" instructions confuse users on mobile devices where columns stack vertically.
 **Action:** Use context-aware or neutral language (e.g., "Upload an image above" or "Upload an image to start").
+
+## 2025-01-27 - Semantic Feedback
+**Learning:** Streamlit's native output containers lack ARIA roles (like `role="status"`), making dynamic updates invisible to screen readers.
+**Action:** Wrap result containers in custom HTML with `role="status"` and `aria-live="polite"` using `st.markdown(..., unsafe_allow_html=True)`.
