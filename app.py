@@ -129,7 +129,8 @@ with col1:
     st.markdown("#### 1. Upload Image")
     uploaded_file = st.file_uploader(
         "Choose a food image...",
-        type=["jpg", "jpeg", "png"]
+        type=["jpg", "jpeg", "png"],
+        help="Upload a clear photo of one of the 5 supported foods: Burger, Cake, Fried Rice, Pizza, or Sushi."
     )
 
     if uploaded_file:
