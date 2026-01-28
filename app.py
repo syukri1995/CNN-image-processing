@@ -90,7 +90,7 @@ except Exception as e:
     st.warning("⚠️ If you are running this locally, make sure you have pulled the model file via Git LFS.")
     model = None
 
-class_names = ['Burger', 'Cake', 'Fried Rice', 'Pizza', 'Sushi']
+class_names = ['Burger', 'Cake', 'Chicken Wing', 'Pizza', 'Sushi']
 
 # -----------------------------
 # SIDEBAR
@@ -130,7 +130,7 @@ with col1:
     uploaded_file = st.file_uploader(
         "Choose a food image...",
         type=["jpg", "jpeg", "png"],
-        help="Upload a clear photo of one of the 5 supported foods: Burger, Cake, Fried Rice, Pizza, or Sushi."
+        help="Upload a clear photo of one of the 5 supported foods: Burger, Cake, Chicken Wing, Pizza, or Sushi."
     )
 
     if uploaded_file:
