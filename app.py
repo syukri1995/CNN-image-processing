@@ -90,7 +90,7 @@ except Exception as e:
     st.warning("⚠️ If you are running this locally, make sure you have pulled the model file via Git LFS.")
     model = None
 
-class_names = ['Burger', 'Cake', 'Chicken_wings', 'Pizza', 'Sushi']
+class_names = ['burger', 'hot_dog', 'sandwich', 'pizza', 'sushi']
 
 # -----------------------------
 # SIDEBAR
