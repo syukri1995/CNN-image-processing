@@ -106,7 +106,7 @@ except Exception as e:
     st.warning("⚠️ If you are running this locally, make sure you have pulled the model file via Git LFS.")
     model = None
 
-class_names = ['Donut', 'hot_dog', 'sandwich', 'pizza', 'sushi']
+class_names = ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
 
 def show_classifier():
     # -----------------------------
