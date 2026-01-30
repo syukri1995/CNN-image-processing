@@ -106,7 +106,7 @@ except Exception as e:
     st.warning("⚠️ If you are running this locally, make sure you have pulled the model file via Git LFS.")
     model = None
 
-class_names = ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
+class_names = ['Donut', 'Sandwich', 'Hot Dog', 'Pizza', 'Sushi']
 
 def show_classifier():
     # -----------------------------
@@ -134,7 +134,8 @@ def show_classifier():
         st.markdown("#### 1. Upload Image")
         uploaded_file = st.file_uploader(
             "Choose a food image...",
-            type=["jpg", "jpeg", "png"]
+            type=["jpg", "jpeg", "png"],
+            help="Supported formats: JPG, JPEG, PNG. The model recognizes Donuts, Sandwiches, Hot Dogs, Pizzas, and Sushi."
         )
 
         if uploaded_file:
@@ -261,7 +262,7 @@ def show_gallery():
                 with st.container():
                     st.image(str(img_path), use_container_width=True)
                     # Button to open fullscreen
-                    if st.button("🔍 View", key=f"btn_{i}", use_container_width=True):
+                    if st.button("🔍 View", key=f"btn_{i}", use_container_width=True, help="Open in fullscreen"):
                         st.session_state.view_mode = 'fullscreen'
                         st.session_state.current_image_index = i
                         st.rerun()
@@ -294,7 +295,7 @@ def show_gallery():
             # Spacer to center vertical button approximately
             for _ in range(10): st.write("")
             if idx > 0:
-                if st.button("◀️", key="prev_btn"):
+                if st.button("◀️", key="prev_btn", help="Previous image"):
                     st.session_state.current_image_index -= 1
                     st.rerun()
             else:
@@ -307,14 +308,14 @@ def show_gallery():
             # Exit Button Centered
             c1, c2, c3 = st.columns([4, 2, 4])
             with c2:
-                if st.button("Exit Fullscreen", key="exit_btn", use_container_width=True):
+                if st.button("Exit Fullscreen", key="exit_btn", use_container_width=True, help="Return to grid view"):
                     st.session_state.view_mode = 'grid'
                     st.rerun()
 
         with col_next:
             for _ in range(10): st.write("")
             if idx < total - 1:
-                if st.button("▶️", key="next_btn"):
+                if st.button("▶️", key="next_btn", help="Next image"):
                     st.session_state.current_image_index += 1
                     st.rerun()
             else:
