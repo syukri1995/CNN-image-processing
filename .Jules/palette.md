@@ -5,3 +5,7 @@
 ## 2024-05-23 - Directional Language
 **Learning:** "Left panel" instructions confuse users on mobile devices where columns stack vertically.
 **Action:** Use context-aware or neutral language (e.g., "Upload an image above" or "Upload an image to start").
+
+## 2024-05-24 - Empty State Onboarding
+**Learning:** Generic empty states ("Upload an image") miss an opportunity to educate users about model capabilities (e.g., specific food categories).
+**Action:** List supported categories or constraints directly in the empty state message to manage user expectations before interaction.
