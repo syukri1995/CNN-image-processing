@@ -197,7 +197,15 @@ def show_classifier():
                 )
 
         else:
-            st.info("👋 Upload an image to start the classification.")
+            st.info(
+                "👋 **Upload a photo to start!**\n\n"
+                "I can currently recognize these 5 foods:\n"
+                "* 🍩 Donut\n"
+                "* 🥪 Sandwich\n"
+                "* 🌭 Hot Dog\n"
+                "* 🍕 Pizza\n"
+                "* 🍣 Sushi"
+            )
 
 def show_gallery():
     st.title("🖼️ Training Dataset Gallery")
