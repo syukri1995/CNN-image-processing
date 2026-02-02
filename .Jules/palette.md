@@ -5,3 +5,7 @@
 ## 2024-05-23 - Directional Language
 **Learning:** "Left panel" instructions confuse users on mobile devices where columns stack vertically.
 **Action:** Use context-aware or neutral language (e.g., "Upload an image above" or "Upload an image to start").
+
+## 2024-05-24 - Mobile Usability & Discovery
+**Learning:** Critical model capabilities (supported classes) hidden in sidebars are missed by mobile users.
+**Action:** Expose supported categories directly in the empty state (main view) to manage expectations upfront.
