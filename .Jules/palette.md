@@ -9,3 +9,7 @@
 ## 2024-05-24 - Mobile Usability & Discovery
 **Learning:** Critical model capabilities (supported classes) hidden in sidebars are missed by mobile users.
 **Action:** Expose supported categories directly in the empty state (main view) to manage expectations upfront.
+
+## 2024-05-25 - Native Tooltips for Accessibility
+**Learning:** Custom tooltip implementations are brittle; Streamlit's native `help` parameter provides built-in keyboard accessibility and consistent styling with zero overhead.
+**Action:** Always prefer `help="Tooltip text"` on standard widgets over custom HTML/CSS solutions for guidance.
