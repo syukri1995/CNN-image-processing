@@ -9,3 +9,7 @@
 ## 2024-05-24 - Mobile Usability & Discovery
 **Learning:** Critical model capabilities (supported classes) hidden in sidebars are missed by mobile users.
 **Action:** Expose supported categories directly in the empty state (main view) to manage expectations upfront.
+
+## 2025-02-04 - Helpful Tooltips
+**Learning:** Users often upload unsupported file types because constraints are hidden.
+**Action:** Use the `help` parameter in Streamlit widgets (like `st.file_uploader`) to provide accessible, keyboard-friendly tooltips without custom UI implementation.
