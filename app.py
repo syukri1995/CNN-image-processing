@@ -106,7 +106,7 @@ except Exception as e:
     st.warning("⚠️ If you are running this locally, make sure you have pulled the model file via Git LFS.")
     model = None
 
-class_names = ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
+class_names = ['Donut', 'Sandwich', 'Hot Dog', 'Pizza', 'Sushi']
 
 def show_classifier():
     # -----------------------------
@@ -134,7 +134,8 @@ def show_classifier():
         st.markdown("#### 1. Upload Image")
         uploaded_file = st.file_uploader(
             "Choose a food image...",
-            type=["jpg", "jpeg", "png"]
+            type=["jpg", "jpeg", "png"],
+            help="Upload a clear photo of food. Supported formats: JPG, PNG, JPEG."
         )
 
         if uploaded_file:
