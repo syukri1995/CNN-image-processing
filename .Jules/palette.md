@@ -9,3 +9,7 @@
 ## 2024-05-24 - Mobile Usability & Discovery
 **Learning:** Critical model capabilities (supported classes) hidden in sidebars are missed by mobile users.
 **Action:** Expose supported categories directly in the empty state (main view) to manage expectations upfront.
+
+## 2025-02-18 - Accessibility for Icon Buttons
+**Learning:** Streamlit's `st.button` does not support explicit `aria-label`.
+**Action:** Always use the `help` parameter for icon-only buttons to provide a tooltip that acts as an accessible description.
