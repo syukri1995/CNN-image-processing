@@ -134,7 +134,8 @@ def show_classifier():
         st.markdown("#### 1. Upload Image")
         uploaded_file = st.file_uploader(
             "Choose a food image...",
-            type=["jpg", "jpeg", "png"]
+            type=["jpg", "jpeg", "png"],
+            help="Upload a clear photo of a single food item. Supported formats: JPG, PNG."
         )
 
         if uploaded_file:
@@ -302,11 +303,11 @@ def show_gallery():
             # Spacer to center vertical button approximately
             for _ in range(10): st.write("")
             if idx > 0:
-                if st.button("◀️", key="prev_btn"):
+                if st.button("◀️", key="prev_btn", help="Previous image"):
                     st.session_state.current_image_index -= 1
                     st.rerun()
             else:
-                st.button("◀️", disabled=True, key="prev_btn_disabled")
+                st.button("◀️", disabled=True, key="prev_btn_disabled", help="No previous image")
 
         with col_img:
             # Display the main image
@@ -315,18 +316,18 @@ def show_gallery():
             # Exit Button Centered
             c1, c2, c3 = st.columns([4, 2, 4])
             with c2:
-                if st.button("Exit Fullscreen", key="exit_btn", use_container_width=True):
+                if st.button("Exit Fullscreen", key="exit_btn", use_container_width=True, help="Return to grid view"):
                     st.session_state.view_mode = 'grid'
                     st.rerun()
 
         with col_next:
             for _ in range(10): st.write("")
             if idx < total - 1:
-                if st.button("▶️", key="next_btn"):
+                if st.button("▶️", key="next_btn", help="Next image"):
                     st.session_state.current_image_index += 1
                     st.rerun()
             else:
-                st.button("▶️", disabled=True, key="next_btn_disabled")
+                st.button("▶️", disabled=True, key="next_btn_disabled", help="No more images")
 
 # -----------------------------
 # MAIN APP NAVIGATION
