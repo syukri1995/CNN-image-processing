@@ -162,9 +162,12 @@ def show_classifier():
                     predicted_class = class_names[predicted_class_idx]
                     confidence = float(np.max(prediction))
 
+                # Feedback
+                st.toast("✅ Analysis complete!", icon="🎉")
+
                 # Display Top Prediction
                 st.markdown(f"""
-                <div class="prediction-box">
+                <div class="prediction-box" role="status" aria-live="polite">
                     <div class="prediction-title">Top Prediction</div>
                     <div class="confidence-score">{predicted_class}</div>
                     <p>Confidence: {confidence*100:.1f}%</p>
