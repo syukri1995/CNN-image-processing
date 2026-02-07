@@ -13,3 +13,7 @@
 ## 2025-02-18 - Accessibility for Icon Buttons
 **Learning:** Streamlit's `st.button` does not support explicit `aria-label`.
 **Action:** Always use the `help` parameter for icon-only buttons to provide a tooltip that acts as an accessible description.
+
+## 2025-02-18 - Empty State Visual Hierarchy
+**Learning:** Generic `st.info` alerts for empty states are visually underwhelming and feel like temporary errors rather than a "ready" state.
+**Action:** Use custom HTML/CSS components with clear calls-to-action and badging for supported capabilities to create a polished "waiting for input" experience.

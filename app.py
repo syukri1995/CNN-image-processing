@@ -72,6 +72,25 @@ def local_css():
     div[data-testid="stImage"]:hover img {
         transform: scale(1.02);
     }
+    .empty-state-box {
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        padding: 40px;
+        text-align: center;
+        background-color: #fafafa;
+        color: #666;
+    }
+    .food-badge {
+        display: inline-block;
+        background-color: #ffebee;
+        color: #D32F2F;
+        padding: 5px 15px;
+        border-radius: 20px;
+        margin: 5px;
+        font-weight: 500;
+        font-size: 0.9em;
+        border: 1px solid #ffcdd2;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -159,7 +178,7 @@ def show_classifier():
                 with st.spinner('Analyzing image...'):
                     prediction = model.predict(img_array)
                     predicted_class_idx = np.argmax(prediction)
-                    predicted_class = class_names[predicted_class_idx]
+                    predicted_class = class_names[predicted_class_idx].replace('_', ' ').title()
                     confidence = float(np.max(prediction))
 
                 # Display Top Prediction
@@ -198,15 +217,19 @@ def show_classifier():
                 )
 
         else:
-            st.info(
-                "👋 **Upload a photo to start!**\n\n"
-                "I can currently recognize these 5 foods:\n"
-                "* 🍩 Donut\n"
-                "* 🥪 Sandwich\n"
-                "* 🌭 Hot Dog\n"
-                "* 🍕 Pizza\n"
-                "* 🍣 Sushi"
-            )
+            st.markdown("""
+            <div class="empty-state-box">
+                <h3>👈 Upload an image to start!</h3>
+                <p>I can currently recognize these foods:</p>
+                <div style="margin-top: 15px;">
+                    <span class="food-badge">🍩 Donut</span>
+                    <span class="food-badge">🥪 Sandwich</span>
+                    <span class="food-badge">🌭 Hot Dog</span>
+                    <span class="food-badge">🍕 Pizza</span>
+                    <span class="food-badge">🍣 Sushi</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
 def show_gallery():
     st.title("🖼️ Training Dataset Gallery")
