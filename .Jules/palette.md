@@ -13,3 +13,7 @@
 ## 2025-02-18 - Accessibility for Icon Buttons
 **Learning:** Streamlit's `st.button` does not support explicit `aria-label`.
 **Action:** Always use the `help` parameter for icon-only buttons to provide a tooltip that acts as an accessible description.
+
+## 2026-02-08 - HTML Injection Formatting
+**Learning:** Indenting HTML strings in `st.markdown` (even with `unsafe_allow_html=True`) causes Streamlit to render them as code blocks, breaking the layout.
+**Action:** Always use flat strings or `textwrap.dedent` when injecting multi-line HTML via `st.markdown`.
