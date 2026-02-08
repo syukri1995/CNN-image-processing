@@ -72,6 +72,56 @@ def local_css():
     div[data-testid="stImage"]:hover img {
         transform: scale(1.02);
     }
+    .empty-state-box {
+        text-align: center;
+        padding: 40px;
+        background-color: white;
+        border-radius: 10px;
+        border: 2px dashed #ddd;
+        color: #555;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .empty-state-icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+    }
+    .empty-state-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 15px;
+    }
+    .category-container {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    .category-tag {
+        background-color: #ffebee;
+        color: #D32F2F;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 500;
+        border: 1px solid #ffcdd2;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .pro-tip {
+        margin-top: 30px;
+        font-size: 13px;
+        color: #777;
+        font-style: italic;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 5px;
+        width: 100%;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -143,9 +193,9 @@ def show_classifier():
             st.image(img, caption="Uploaded Image", use_container_width=True)
 
     with col2:
-        st.markdown("#### 2. Prediction Results")
-
         if uploaded_file:
+            st.markdown("#### 2. Prediction Results")
+
             if model is None:
                 st.error("⚠️ Model is not loaded. Cannot predict.")
             else:
@@ -198,15 +248,24 @@ def show_classifier():
                 )
 
         else:
-            st.info(
-                "👋 **Upload a photo to start!**\n\n"
-                "I can currently recognize these 5 foods:\n"
-                "* 🍩 Donut\n"
-                "* 🥪 Sandwich\n"
-                "* 🌭 Hot Dog\n"
-                "* 🍕 Pizza\n"
-                "* 🍣 Sushi"
-            )
+            # Custom Empty State
+            st.markdown("""
+<div class="empty-state-box">
+    <div class="empty-state-icon">🍽️</div>
+    <div class="empty-state-title">Ready to Analyze</div>
+    <p>Upload a food photo to identify what's on your plate!</p>
+    <div class="category-container">
+        <span class="category-tag">🍩 Donut</span>
+        <span class="category-tag">🥪 Sandwich</span>
+        <span class="category-tag">🌭 Hot Dog</span>
+        <span class="category-tag">🍕 Pizza</span>
+        <span class="category-tag">🍣 Sushi</span>
+    </div>
+    <div class="pro-tip">
+        💡 <strong>Pro Tip:</strong> For best results, center the food item and use good lighting.
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 def show_gallery():
     st.title("🖼️ Training Dataset Gallery")
