@@ -80,9 +80,21 @@ local_css()
 # =============================
 # CACHE MODEL LOADING
 # =============================
+class MockModel:
+    """A mock model for testing purposes when the real model is not available."""
+    def predict(self, img_array):
+        # Return a fixed probability distribution for testing
+        # ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
+        # Let's make it predict Pizza (index 3) with high confidence
+        return np.array([[0.05, 0.05, 0.05, 0.8, 0.05]])
+
 @st.cache_resource
 def load_food_model():
     """Load and cache the CNN model"""
+    # Check for Mock Mode
+    if os.environ.get("MOCK_MODEL"):
+        return MockModel()
+
     # Get the directory where this script is located
     script_dir = Path(__file__).parent
     model_path = script_dir / "food_cnn_model.keras"
@@ -164,10 +176,10 @@ def show_classifier():
 
                 # Display Top Prediction
                 st.markdown(f"""
-                <div class="prediction-box">
-                    <div class="prediction-title">Top Prediction</div>
+                <div class="prediction-box" role="status" aria-live="polite">
+                    <h2 class="prediction-title">Top Prediction</h2>
                     <div class="confidence-score">{predicted_class}</div>
-                    <p>Confidence: {confidence*100:.1f}%</p>
+                    <p>Confidence: <strong>{confidence*100:.1f}%</strong></p>
                 </div>
                 """, unsafe_allow_html=True)
 
