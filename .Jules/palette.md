@@ -13,3 +13,7 @@
 ## 2025-02-18 - Accessibility for Icon Buttons
 **Learning:** Streamlit's `st.button` does not support explicit `aria-label`.
 **Action:** Always use the `help` parameter for icon-only buttons to provide a tooltip that acts as an accessible description.
+
+## 2025-02-18 - Accessible Live Regions
+**Learning:** Streamlit updates to dynamic content (like prediction results) are not automatically announced by screen readers.
+**Action:** Wrap the result container in a div with role="status" and aria-live="polite" using st.markdown(..., unsafe_allow_html=True).
