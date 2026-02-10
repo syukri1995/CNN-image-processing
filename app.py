@@ -164,8 +164,8 @@ def show_classifier():
 
                 # Display Top Prediction
                 st.markdown(f"""
-                <div class="prediction-box">
-                    <div class="prediction-title">Top Prediction</div>
+                <div class="prediction-box" role="status" aria-live="polite">
+                    <h3 class="prediction-title" style="margin-top: 0;">Top Prediction</h3>
                     <div class="confidence-score">{predicted_class}</div>
                     <p>Confidence: {confidence*100:.1f}%</p>
                 </div>
