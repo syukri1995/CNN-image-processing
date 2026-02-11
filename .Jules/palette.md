@@ -13,3 +13,7 @@
 ## 2025-02-18 - Accessibility for Icon Buttons
 **Learning:** Streamlit's `st.button` does not support explicit `aria-label`.
 **Action:** Always use the `help` parameter for icon-only buttons to provide a tooltip that acts as an accessible description.
+
+## 2025-05-24 - Accessible Dynamic Content
+**Learning:** Prediction results rendered in plain `div` elements are silent to screen readers until focus moves.
+**Action:** Wrap dynamic result containers with `role="status"` and `aria-live="polite"` to ensure immediate announcement.
