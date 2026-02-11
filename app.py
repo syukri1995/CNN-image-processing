@@ -9,6 +9,12 @@ from streamlit_option_menu import option_menu
 import os
 from pathlib import Path
 
+class MockModel:
+    """Mock model for testing/development without LFS files"""
+    def predict(self, input_data):
+        # Return dummy probabilities for 5 classes: Donut, sandwich, hot_dog, pizza, sushi
+        return np.array([[0.1, 0.8, 0.05, 0.02, 0.03]])
+
 # =============================
 # PAGE CONFIG
 # =============================
@@ -83,6 +89,9 @@ local_css()
 @st.cache_resource
 def load_food_model():
     """Load and cache the CNN model"""
+    if os.environ.get("MOCK_MODEL"):
+        return MockModel()
+
     # Get the directory where this script is located
     script_dir = Path(__file__).parent
     model_path = script_dir / "food_cnn_model.keras"
@@ -162,10 +171,12 @@ def show_classifier():
                     predicted_class = class_names[predicted_class_idx]
                     confidence = float(np.max(prediction))
 
+                st.toast("Analysis complete!", icon="✅")
+
                 # Display Top Prediction
                 st.markdown(f"""
-                <div class="prediction-box">
-                    <div class="prediction-title">Top Prediction</div>
+                <div class="prediction-box" role="status" aria-live="polite">
+                    <h2 class="prediction-title">Top Prediction</h2>
                     <div class="confidence-score">{predicted_class}</div>
                     <p>Confidence: {confidence*100:.1f}%</p>
                 </div>
