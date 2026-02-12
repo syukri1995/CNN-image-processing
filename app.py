@@ -87,6 +87,15 @@ def load_food_model():
     script_dir = Path(__file__).parent
     model_path = script_dir / "food_cnn_model.keras"
     
+    # Mock model for verification/testing
+    if os.environ.get("MOCK_MODEL"):
+        class MockModel:
+            def predict(self, x):
+                # Return a dummy prediction (pizza)
+                return np.array([[0.05, 0.05, 0.05, 0.8, 0.05]])
+        st.warning("⚠️ Running with Mock Model")
+        return MockModel()
+
     # Check if model file exists
     if not model_path.exists():
         # Fallback for dev environment without LFS
@@ -163,8 +172,9 @@ def show_classifier():
                     confidence = float(np.max(prediction))
 
                 # Display Top Prediction
+                st.toast("Analysis complete!", icon="✅")
                 st.markdown(f"""
-                <div class="prediction-box">
+                <div class="prediction-box" role="status" aria-live="polite">
                     <div class="prediction-title">Top Prediction</div>
                     <div class="confidence-score">{predicted_class}</div>
                     <p>Confidence: {confidence*100:.1f}%</p>

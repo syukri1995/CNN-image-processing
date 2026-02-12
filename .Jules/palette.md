@@ -13,3 +13,11 @@
 ## 2025-02-18 - Accessibility for Icon Buttons
 **Learning:** Streamlit's `st.button` does not support explicit `aria-label`.
 **Action:** Always use the `help` parameter for icon-only buttons to provide a tooltip that acts as an accessible description.
+
+## 2025-02-18 - Accessibility & Verification
+**Learning:** Dynamic content updates (like prediction results) are silent to screen readers in Streamlit by default.
+**Action:** Wrap result containers in `div` with `role="status"` and `aria-live="polite"` using `st.markdown(unsafe_allow_html=True)`.
+
+## 2025-02-18 - UX Verification Pattern
+**Learning:** Heavy ML models (via LFS) block lightweight UI/UX verification in CI/dev environments.
+**Action:** Implement a `MOCK_MODEL` environment variable to bypass model loading and allow rapid UI testing.
