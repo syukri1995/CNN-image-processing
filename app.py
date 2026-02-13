@@ -80,9 +80,21 @@ local_css()
 # =============================
 # CACHE MODEL LOADING
 # =============================
+class MockModel:
+    """Mock model for testing UI without loading heavy weights"""
+    def predict(self, x):
+        # Return random probabilities for 5 classes
+        probs = np.random.rand(1, 5)
+        # Normalize to sum to 1
+        return probs / np.sum(probs)
+
 @st.cache_resource
 def load_food_model():
     """Load and cache the CNN model"""
+    # Check for mock environment
+    if os.environ.get("MOCK_MODEL"):
+        return MockModel()
+
     # Get the directory where this script is located
     script_dir = Path(__file__).parent
     model_path = script_dir / "food_cnn_model.keras"
@@ -106,7 +118,7 @@ except Exception as e:
     st.warning("⚠️ If you are running this locally, make sure you have pulled the model file via Git LFS.")
     model = None
 
-class_names = ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
+class_names = ['Donut 🍩', 'Sandwich 🥪', 'Hot Dog 🌭', 'Pizza 🍕', 'Sushi 🍣']
 
 def show_classifier():
     # -----------------------------
@@ -164,12 +176,15 @@ def show_classifier():
 
                 # Display Top Prediction
                 st.markdown(f"""
-                <div class="prediction-box">
+                <div class="prediction-box" role="status" aria-live="polite">
                     <div class="prediction-title">Top Prediction</div>
                     <div class="confidence-score">{predicted_class}</div>
                     <p>Confidence: {confidence*100:.1f}%</p>
                 </div>
                 """, unsafe_allow_html=True)
+
+                # Feedback
+                st.toast("Analysis complete!", icon="✅")
 
                 if confidence > 0.8:
                     st.success("High confidence prediction! 🎉")
@@ -198,14 +213,12 @@ def show_classifier():
                 )
 
         else:
+            # Generate list from class_names for consistency
+            food_list = "\n".join([f"* {name}" for name in class_names])
             st.info(
-                "👋 **Upload a photo to start!**\n\n"
-                "I can currently recognize these 5 foods:\n"
-                "* 🍩 Donut\n"
-                "* 🥪 Sandwich\n"
-                "* 🌭 Hot Dog\n"
-                "* 🍕 Pizza\n"
-                "* 🍣 Sushi"
+                f"👋 **Upload a photo to start!**\n\n"
+                f"I can currently recognize these 5 foods:\n"
+                f"{food_list}"
             )
 
 def show_gallery():
