@@ -80,9 +80,19 @@ local_css()
 # =============================
 # CACHE MODEL LOADING
 # =============================
+class MockModel:
+    def predict(self, img_array):
+        # Return dummy probabilities for 5 classes
+        # Index 1 is Sandwich, giving it highest probability
+        return np.array([[0.1, 0.7, 0.05, 0.05, 0.1]])
+
 @st.cache_resource
 def load_food_model():
     """Load and cache the CNN model"""
+    # Prioritize mock model if env var is set
+    if os.environ.get("MOCK_MODEL"):
+        return MockModel()
+
     # Get the directory where this script is located
     script_dir = Path(__file__).parent
     model_path = script_dir / "food_cnn_model.keras"
@@ -106,7 +116,13 @@ except Exception as e:
     st.warning("⚠️ If you are running this locally, make sure you have pulled the model file via Git LFS.")
     model = None
 
-class_names = ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
+class_names = [
+    'Donut 🍩',
+    'Sandwich 🥪',
+    'Hot Dog 🌭',
+    'Pizza 🍕',
+    'Sushi 🍣'
+]
 
 def show_classifier():
     # -----------------------------
@@ -164,7 +180,7 @@ def show_classifier():
 
                 # Display Top Prediction
                 st.markdown(f"""
-                <div class="prediction-box">
+                <div class="prediction-box" role="status" aria-live="polite">
                     <div class="prediction-title">Top Prediction</div>
                     <div class="confidence-score">{predicted_class}</div>
                     <p>Confidence: {confidence*100:.1f}%</p>
@@ -198,14 +214,12 @@ def show_classifier():
                 )
 
         else:
+            # Dynamically generate the list from class_names to keep it in sync
+            food_list = "\n".join([f"* {name}" for name in class_names])
             st.info(
-                "👋 **Upload a photo to start!**\n\n"
-                "I can currently recognize these 5 foods:\n"
-                "* 🍩 Donut\n"
-                "* 🥪 Sandwich\n"
-                "* 🌭 Hot Dog\n"
-                "* 🍕 Pizza\n"
-                "* 🍣 Sushi"
+                f"👋 **Upload a photo to start!**\n\n"
+                f"I can currently recognize these 5 foods:\n"
+                f"{food_list}"
             )
 
 def show_gallery():
