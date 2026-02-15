@@ -13,3 +13,11 @@
 ## 2025-02-18 - Accessibility for Icon Buttons
 **Learning:** Streamlit's `st.button` does not support explicit `aria-label`.
 **Action:** Always use the `help` parameter for icon-only buttons to provide a tooltip that acts as an accessible description.
+
+## 2025-02-27 - Streamlit Accessibility Patterns
+**Learning:** Streamlit's `st.info` and `st.success` are not automatically announced by screen readers when dynamically updated. Injecting semantic HTML via `st.markdown` with `role="status"` and `aria-live="polite"` is crucial for accessible status updates (like prediction results).
+**Action:** Always wrap dynamic result containers in semantic HTML with live region attributes when building Streamlit apps.
+
+## 2025-02-27 - Testing UI without Heavy Models
+**Learning:** Adding a `MockModel` class guarded by an environment variable allows verifying complex UI states (like prediction results) in CI/headless environments without loading large model files.
+**Action:** Implement mock backends for UI verification tests to improve test reliability and speed.
