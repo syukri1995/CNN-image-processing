@@ -80,9 +80,21 @@ local_css()
 # =============================
 # CACHE MODEL LOADING
 # =============================
+class MockModel:
+    """Mock model for testing/demo purposes"""
+    def predict(self, img_array):
+        # Return a fixed prediction (Pizza) for consistency in tests
+        # Index 3 is Pizza
+        # [Donut, sandwich, hot_dog, pizza, sushi]
+        return np.array([[0.05, 0.05, 0.05, 0.8, 0.05]])
+
 @st.cache_resource
 def load_food_model():
     """Load and cache the CNN model"""
+    # Check for mock model env var
+    if os.environ.get("MOCK_MODEL"):
+        return MockModel()
+
     # Get the directory where this script is located
     script_dir = Path(__file__).parent
     model_path = script_dir / "food_cnn_model.keras"
@@ -108,13 +120,27 @@ except Exception as e:
 
 class_names = ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
 
+FOOD_INFO = {
+    'Donut': {'name': 'Donut', 'emoji': '🍩'},
+    'sandwich': {'name': 'Sandwich', 'emoji': '🥪'},
+    'hot_dog': {'name': 'Hot Dog', 'emoji': '🌭'},
+    'pizza': {'name': 'Pizza', 'emoji': '🍕'},
+    'sushi': {'name': 'Sushi', 'emoji': '🍣'}
+}
+
+def format_prediction(class_name):
+    """Format class name with emoji and title case"""
+    info = FOOD_INFO.get(class_name, {'name': class_name.title().replace('_', ' '), 'emoji': '🍽️'})
+    return info
+
 def show_classifier():
     # -----------------------------
     # SIDEBAR CONTENT FOR CLASSIFIER
     # -----------------------------
     st.sidebar.markdown("### 📋 Categories")
     for food in class_names:
-        st.sidebar.markdown(f"- {food}")
+        info = format_prediction(food)
+        st.sidebar.markdown(f"- {info['emoji']} {info['name']}")
 
     st.sidebar.markdown("---")
     with st.sidebar.expander("❓ How to use"):
@@ -163,10 +189,11 @@ def show_classifier():
                     confidence = float(np.max(prediction))
 
                 # Display Top Prediction
+                info = format_prediction(predicted_class)
                 st.markdown(f"""
-                <div class="prediction-box">
+                <div class="prediction-box" role="status" aria-live="polite">
                     <div class="prediction-title">Top Prediction</div>
-                    <div class="confidence-score">{predicted_class}</div>
+                    <div class="confidence-score">{info['emoji']} {info['name']}</div>
                     <p>Confidence: {confidence*100:.1f}%</p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -183,7 +210,7 @@ def show_classifier():
 
                 # Create DataFrame for chart
                 prob_df = pd.DataFrame({
-                    'Category': class_names,
+                    'Category': [format_prediction(c)['name'] for c in class_names],
                     'Probability': prediction[0]
                 })
 
