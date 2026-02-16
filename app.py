@@ -108,13 +108,27 @@ except Exception as e:
 
 class_names = ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
 
+# Map class names to display names and emojis
+FOOD_INFO = {
+    'Donut': {'name': 'Donut', 'emoji': '🍩'},
+    'sandwich': {'name': 'Sandwich', 'emoji': '🥪'},
+    'hot_dog': {'name': 'Hot Dog', 'emoji': '🌭'},
+    'pizza': {'name': 'Pizza', 'emoji': '🍕'},
+    'sushi': {'name': 'Sushi', 'emoji': '🍣'}
+}
+
+def format_prediction(class_name):
+    """Format the prediction class name with emoji."""
+    return FOOD_INFO.get(class_name, {'name': class_name.title().replace('_', ' '), 'emoji': '🍽️'})
+
 def show_classifier():
     # -----------------------------
     # SIDEBAR CONTENT FOR CLASSIFIER
     # -----------------------------
     st.sidebar.markdown("### 📋 Categories")
     for food in class_names:
-        st.sidebar.markdown(f"- {food}")
+        info = format_prediction(food)
+        st.sidebar.markdown(f"- {info['emoji']} {info['name']}")
 
     st.sidebar.markdown("---")
     with st.sidebar.expander("❓ How to use"):
@@ -162,11 +176,14 @@ def show_classifier():
                     predicted_class = class_names[predicted_class_idx]
                     confidence = float(np.max(prediction))
 
+                # Format prediction
+                info = format_prediction(predicted_class)
+
                 # Display Top Prediction
                 st.markdown(f"""
-                <div class="prediction-box">
+                <div class="prediction-box" role="status" aria-live="polite">
                     <div class="prediction-title">Top Prediction</div>
-                    <div class="confidence-score">{predicted_class}</div>
+                    <div class="confidence-score">{info['emoji']} {info['name']}</div>
                     <p>Confidence: {confidence*100:.1f}%</p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -182,8 +199,9 @@ def show_classifier():
                 st.markdown("### Class Probabilities")
 
                 # Create DataFrame for chart
+                formatted_categories = [format_prediction(c)['name'] for c in class_names]
                 prob_df = pd.DataFrame({
-                    'Category': class_names,
+                    'Category': formatted_categories,
                     'Probability': prediction[0]
                 })
 
@@ -198,14 +216,11 @@ def show_classifier():
                 )
 
         else:
+            categories_list = "\n".join([f"* {format_prediction(c)['emoji']} {format_prediction(c)['name']}" for c in class_names])
             st.info(
-                "👋 **Upload a photo to start!**\n\n"
-                "I can currently recognize these 5 foods:\n"
-                "* 🍩 Donut\n"
-                "* 🥪 Sandwich\n"
-                "* 🌭 Hot Dog\n"
-                "* 🍕 Pizza\n"
-                "* 🍣 Sushi"
+                f"👋 **Upload a photo to start!**\n\n"
+                f"I can currently recognize these {len(class_names)} foods:\n"
+                f"{categories_list}"
             )
 
 def show_gallery():
