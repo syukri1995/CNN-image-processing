@@ -5,9 +5,9 @@ A deep learning-based food image classification system using Convolutional Neura
 ## 📋 Project Overview
 
 This project implements a CNN model to classify food images into 5 categories:
-- 🍔 **Burger**
-- 🍰 **Cake**
-- 🍚 **Fried Rice**
+- 🍩 **Donut**
+- 🥪 **Sandwich**
+- 🌭 **Hot Dog**
 - 🍕 **Pizza**
 - 🍣 **Sushi**
 
@@ -66,9 +66,9 @@ Food_cnn_project/
 │   └── cnn.ipynb              # Model training notebook
 ├── dataset/
 │   ├── train/                 # Training images
-│   ├── burger/
-│   ├── cake/
-│   ├── fried_rice/
+│   ├── Donut/
+│   ├── Sandwich/
+│   ├── hot_dog/
 │   ├── pizza/
 │   └── sushi/    
 └── report/                     # Project reports
