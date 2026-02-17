@@ -106,7 +106,7 @@ except Exception as e:
     st.warning("⚠️ If you are running this locally, make sure you have pulled the model file via Git LFS.")
     model = None
 
-class_names = ['Donut', 'sandwich', 'hot_dog', 'pizza', 'sushi']
+class_names = ['Donut 🍩', 'Sandwich 🥪', 'Hot Dog 🌭', 'Pizza 🍕', 'Sushi 🍣']
 
 def show_classifier():
     # -----------------------------
@@ -232,7 +232,11 @@ def show_gallery():
     # Sidebar controls for gallery
     with st.sidebar:
         st.markdown("### 🖼️ Gallery Settings")
-        selected_category = st.selectbox("Select Category", ["All"] + categories)
+        selected_category = st.selectbox(
+            "Select Category",
+            ["All"] + categories,
+            format_func=lambda x: x.replace('_', ' ').title() if x != "All" else "All 🖼️"
+        )
         num_images = st.selectbox("Images to show", [10, 20, 50, 100], index=0)
 
     # Filter images
@@ -270,7 +274,7 @@ def show_gallery():
                 with st.container():
                     st.image(str(img_path), use_container_width=True)
                     # Button to open fullscreen
-                    if st.button("🔍 View", key=f"btn_{i}", use_container_width=True):
+                    if st.button("🔍 View", key=f"btn_{i}", use_container_width=True, help="Click to view full screen"):
                         st.session_state.view_mode = 'fullscreen'
                         st.session_state.current_image_index = i
                         st.rerun()
