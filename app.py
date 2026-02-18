@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import random
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from PIL import Image
@@ -128,6 +129,10 @@ def show_classifier():
     st.title("🍽️ Food Image Classification")
     st.markdown("### Upload a food image to get started")
 
+    # Initialize session state for sample image
+    if 'sample_image_path' not in st.session_state:
+        st.session_state.sample_image_path = None
+
     col1, col2 = st.columns([1, 1])
 
     with col1:
@@ -138,14 +143,32 @@ def show_classifier():
             help="Upload a clear photo of a single food item. Supported formats: JPG, PNG."
         )
 
+        # Clear sample if user uploads a file
         if uploaded_file:
-            img = Image.open(uploaded_file).convert("RGB")
-            st.image(img, caption="Uploaded Image", use_container_width=True)
+            st.session_state.sample_image_path = None
+
+        # Determine active image source
+        active_image_source = uploaded_file or st.session_state.sample_image_path
+        img = None
+
+        if active_image_source:
+            try:
+                img = Image.open(active_image_source).convert("RGB")
+                caption = "Uploaded Image" if uploaded_file else "Sample Image (Random)"
+                st.image(img, caption=caption, use_container_width=True)
+
+                if not uploaded_file and st.session_state.sample_image_path:
+                    if st.button("🔄 Clear Sample", key="clear_sample_btn"):
+                        st.session_state.sample_image_path = None
+                        st.rerun()
+            except Exception as e:
+                st.error(f"Error loading image: {e}")
+                st.session_state.sample_image_path = None
 
     with col2:
         st.markdown("#### 2. Prediction Results")
 
-        if uploaded_file:
+        if active_image_source and img:
             if model is None:
                 st.error("⚠️ Model is not loaded. Cannot predict.")
             else:
@@ -207,6 +230,24 @@ def show_classifier():
                 "* 🍕 Pizza\n"
                 "* 🍣 Sushi"
             )
+
+            st.markdown("---")
+            st.markdown("**No image? Try one from our dataset:**")
+
+            if st.button("🎲 Try Random Sample Image", key="random_sample_btn", help="Load a random image from the training dataset"):
+                dataset_path = Path("dataset/train")
+                if dataset_path.exists():
+                    all_images = []
+                    for ext in ["*.jpg", "*.jpeg", "*.png"]:
+                        all_images.extend(list(dataset_path.rglob(ext)))
+
+                    if all_images:
+                        st.session_state.sample_image_path = str(random.choice(all_images))
+                        st.rerun()
+                    else:
+                        st.error("No images found in dataset.")
+                else:
+                    st.error("Dataset not found.")
 
 def show_gallery():
     st.title("🖼️ Training Dataset Gallery")
