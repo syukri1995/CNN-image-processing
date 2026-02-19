@@ -12,4 +12,8 @@
 
 ## 2025-02-18 - Accessibility for Icon Buttons
 **Learning:** Streamlit's `st.button` does not support explicit `aria-label`.
-**Action:** Always use the `help` parameter for icon-only buttons to provide a tooltip that acts as an accessible description.
+**Action:** Always use the `help` parameter for icon-only buttons to provide accessible descriptions.
+
+## 2025-02-19 - Frictionless Onboarding
+**Learning:** Users without data (images) face a "cold start" problem.
+**Action:** Provide "Try Sample" actions to immediately demonstrate value and capability without requiring user assets.

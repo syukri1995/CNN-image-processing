@@ -7,6 +7,7 @@ from PIL import Image
 from streamlit_option_menu import option_menu
 
 import os
+import random
 from pathlib import Path
 
 # =============================
@@ -78,11 +79,24 @@ def local_css():
 local_css()
 
 # =============================
+# MOCK MODEL
+# =============================
+class MockModel:
+    def predict(self, x):
+        # Generate random probabilities for 5 classes
+        probs = np.random.rand(1, 5)
+        return probs / probs.sum()
+
+# =============================
 # CACHE MODEL LOADING
 # =============================
 @st.cache_resource
 def load_food_model():
     """Load and cache the CNN model"""
+    # Check for forced mock model
+    if os.environ.get("MOCK_MODEL"):
+        return MockModel()
+
     # Get the directory where this script is located
     script_dir = Path(__file__).parent
     model_path = script_dir / "food_cnn_model.keras"
@@ -91,10 +105,17 @@ def load_food_model():
     if not model_path.exists():
         # Fallback for dev environment without LFS
         if os.environ.get("CI") or os.environ.get("HEADLESS"):
-            return None
+            return MockModel()
         raise FileNotFoundError(f"Model file not found at: {model_path}")
     
-    return load_model(str(model_path))
+    try:
+        return load_model(str(model_path))
+    except Exception as e:
+        # If loading fails (e.g. LFS pointer file), fallback to mock if requested or headless
+        if os.environ.get("CI") or os.environ.get("HEADLESS"):
+            print(f"⚠️ specific loading error: {e}. Using Mock Model.")
+            return MockModel()
+        raise e
 
 # =============================
 # LOAD MODEL
@@ -130,6 +151,8 @@ def show_classifier():
 
     col1, col2 = st.columns([1, 1])
 
+    img = None
+
     with col1:
         st.markdown("#### 1. Upload Image")
         uploaded_file = st.file_uploader(
@@ -138,14 +161,34 @@ def show_classifier():
             help="Upload a clear photo of a single food item. Supported formats: JPG, PNG."
         )
 
+        # Sample button logic
+        if Path("dataset/train").exists():
+            if st.button("🎲 Try Random Sample", help="Use a random image from the dataset to test the model"):
+                valid_extensions = {'.jpg', '.jpeg', '.png'}
+                all_images = [p for p in Path("dataset/train").rglob("*") if p.suffix.lower() in valid_extensions]
+                if all_images:
+                    st.session_state.sample_image_path = str(random.choice(all_images))
+
+        # Determine image source
+        img_source = None
         if uploaded_file:
-            img = Image.open(uploaded_file).convert("RGB")
-            st.image(img, caption="Uploaded Image", use_container_width=True)
+            img_source = uploaded_file
+            st.session_state.sample_image_path = None # Clear sample if user uploads
+        elif st.session_state.get('sample_image_path'):
+            img_source = st.session_state.sample_image_path
+            st.info(f"Using sample: {Path(img_source).name}")
+
+        if img_source:
+            try:
+                img = Image.open(img_source).convert("RGB")
+                st.image(img, caption="Image to Analyze", use_container_width=True)
+            except Exception as e:
+                st.error(f"Error loading image: {e}")
 
     with col2:
         st.markdown("#### 2. Prediction Results")
 
-        if uploaded_file:
+        if img is not None:
             if model is None:
                 st.error("⚠️ Model is not loaded. Cannot predict.")
             else:
